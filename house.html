@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>House</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    </head>
+    
+    <body class="container">
+        <header class="row">
+            <a href="index.html" class="col-10"><img src="images/tgif_logo.png"></a>
+            <a href="mailto:info@tgif.net" class="col-2 text-right"><span class="glyphicon glyphicon-envelope"></span> info@tgif.net</a>
+        </header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border border-dark mb-5"> 
+            <div >
+                <ul class="nav navbar-nav">
+                    <li><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item dropdown" >
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Congress 113</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="senate-data.html">Senate</a>
+                            <a class="dropdown-item active" href="house.html">House</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown" >
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Attendance</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="senate_attendance.html">Senate</a>
+                            <a class="dropdown-item" href="house_attendance.html">House</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown" >
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Party Loyalty</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="senate_party_loyalty.html">Senate</a>
+                            <a class="dropdown-item" href="house_party_loyalty.html">House</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+         
+            <!--Table container-->
+        <main class="container row" id="app">     
+            <h2 class="col-12">Congressmen</h2>
+            <p class="text-left col-sm-8">The major power of the House is to pass federal legislation that affects the entire country, although its bills must also be passed by the Senate and further agreed to by the U.S. President before becoming law (unless both the House and Senate re-pass the legislation with a two-thirds majority in each chamber). The House has some exclusive powers: the power to initiate revenue bills, to impeach officials (impeached officials are subsequently tried in the Senate), and to elect the U.S. President in case there is no majority in the Electoral College.</p>
+            <p class="text-left col-sm-8">Each U.S. state is represented in the House in proportion to its population as measured in the census, but every state is entitled to at least one representative. </p>
+
+            <section class="col-sm-8">
+                Filter by Party:
+                <label v-for="party in parties">
+                    <input class="mx-2" type="checkbox" name="'party'" :value="party.value" v-model="partiesValue">{{party.name}}
+                </label>
+            </section>
+
+            <section class="col-sm-4">
+                Filter by State:
+                <select v-model="states">
+                    <option :value="membersStates(members)">All</option>
+                    <option v-for="state in membersStates(members)" :value="state">{{state}}</option> 
+                </select>
+            </section>
+
+        
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Members</th>
+                        <th class="text-center">Party Affilication</th>
+                        <th class="text-center">State</th>
+                        <th class="text-center">Years in Office</th>
+                        <th class="text-center">Percentage of votes with party</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(member,index) in filterMembers">
+                        <td>
+                            {{index + 1}}.
+                            <template v-if='member.url != "" '>
+                                <a :href="member.url">
+                                    {{member.first_name}} {{member.middle_name}} {{member.last_name}}
+                                </a>
+                            </template>
+                            <template v-else>
+                                {{member.first_name}} {{member.middle_name}} {{member.last_name}}
+                            </template>
+                        </td>
+                        <td class="text-center">
+                            {{member.party}}
+                        </td> 
+                        <td class="text-center">
+                            {{member.state}}
+                        </td>
+                        <td class="text-center">
+                            {{member.seniority}}
+                        </td>
+                        <td class="text-center">
+                            {{member.votes_with_party_pct}} %
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot v-if="partiesValue.length == 0">
+                    <tr>
+                        <td :colspan="5" class="text-center text-dark">
+                            No party has been selected
+                        </td>
+                </tr>
+            </tfoot> 
+            </table>
+	    </main>
+
+        <footer class="container">
+            <p class="card-footer card-sm border border-dark text-center mt-5">&copy; 2016 TGIF | All Rights Reserved</p>
+        </footer>
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+        <script type="text/javascript" src="scripts/vue.js"></script>
+    </body>
+</html>
